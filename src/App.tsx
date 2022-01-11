@@ -1,57 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Page } from "@shopify/polaris";
+import logo from "./logo.svg";
+import "./App.css";
+import PostsContainer from "./components/PostsContainer/PostsContainer";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    // axios
+    //   .get(
+    //     `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_API_KEY}&date=2017-07-08`
+    //   )
+    //   .then((res) => {
+    //     console.log("calling API");
+    //     setImage({
+    //       title: res.data.title,
+    //       date: res.data.date,
+    //       description: res.data.explanation,
+    //       url: res.data.url,
+    //     });
+    //   })
+    //   .then(() => {
+    //     setLoading(false);
+    //   });
+  });
+  return !loading ? (
+    <Page title="Spacestagram">
+      <PostsContainer />
+    </Page>
+  ) : (
+    <div>loading</div>
   );
 }
 
