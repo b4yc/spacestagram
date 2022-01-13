@@ -1,6 +1,6 @@
 export interface Image {
   title: string;
-  date: Date;
+  date: string;
   description: string;
   url: string;
 }

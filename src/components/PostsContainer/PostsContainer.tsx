@@ -1,30 +1,30 @@
-import React, { useEffect } from "react";
-import { Button, Stack } from "@shopify/polaris";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Button, Layout } from "@shopify/polaris";
 
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Post from "../Post/Post";
-import { fetchImagesAsync } from "./imagesSlice";
-
+import { Image } from "../../shared/interfaces";
+import { fetchImagesAsync, setImagesData, selectImages } from "./imagesSlice";
 import "./PostsContainer.scss";
+import { useSelector } from "react-redux";
 
 export default function PostsContainer() {
   const dispatch = useAppDispatch();
+  const images = useAppSelector(selectImages);
+
   useEffect(() => {
-    console.log("useEffect");
-    dispatch(fetchImagesAsync);
+    dispatch(fetchImagesAsync());
   }, []);
   return (
-    <Stack vertical spacing="extraLoose">
-      <Post />
-      <Post />
-      <Post />
-    </Stack>
-    // <div className="container">
-    //   <div className="posts">
-    //     <Post />
-    //     <Post />
-    //     <Post />
-    //   </div>
-    // </div>
+    <div className="posts">
+      <Layout>
+        <Layout.Section>
+          {images.map((image) => (
+            <Post {...image} key={image.date} />
+          ))}
+        </Layout.Section>
+      </Layout>
+    </div>
   );
 }

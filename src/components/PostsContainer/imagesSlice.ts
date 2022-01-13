@@ -20,12 +20,29 @@ const initialState: ImagesState = {
 // typically used to make async requests.
 export const fetchImagesAsync = createAsyncThunk(
   "images/fetchImages",
-  async (_, thunkAPI) => {
-    console.log("in fetch async");
-    const response = await fetchImages();
-    console.log(response);
-    thunkAPI.dispatch(setImages(response));
-    // The value we return becomes the `fulfilled` action payload
+  async (_, { dispatch }) => {
+    const response = await fetchImages()
+      .then((res) => {
+        if (res.statusText === "OK") {
+          dispatch(
+            setImagesData(
+              res.data.map((image: any) => {
+                return {
+                  title: image.title,
+                  date: image.date,
+                  description: image.explanation,
+                  url: image.url,
+                };
+              })
+            )
+          );
+        } else {
+          console.log("error: ", res.statusText);
+        }
+      })
+      .catch((err) => {
+        console.log("error: ", err.message);
+      });
     return response;
   }
 );
@@ -34,10 +51,10 @@ export const imagesSlice = createSlice({
   name: "images",
   initialState,
   reducers: {
-    setImages: (state, action: PayloadAction<Array<Image>>) => {
+    setImagesData: (state, action: PayloadAction<Image[]>) => {
       state.data = action.payload;
     },
-    addImages: (state, action: PayloadAction<Array<Image>>) => {
+    addImages: (state, action: PayloadAction<Image[]>) => {
       state.data = [...state.data, ...action.payload];
     },
   },
@@ -55,7 +72,7 @@ export const imagesSlice = createSlice({
   // },
 });
 
-export const { setImages, addImages } = imagesSlice.actions;
+export const { setImagesData, addImages } = imagesSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

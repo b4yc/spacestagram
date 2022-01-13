@@ -4,6 +4,7 @@ import { Page } from "@shopify/polaris";
 import logo from "./logo.svg";
 import "./App.css";
 import PostsContainer from "./components/PostsContainer/PostsContainer";
+import Skeleton from "./components/Skeleton/Skeleton";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -25,12 +26,10 @@ function App() {
     //     setLoading(false);
     //   });
   });
-  return !loading ? (
-    <Page title="Spacestagram">
+  return (
+    <Page title="Spacestagram" divider>
       <PostsContainer />
     </Page>
-  ) : (
-    <div>loading</div>
   );
 }
 
