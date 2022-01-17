@@ -19,14 +19,16 @@ import likedPostsSlice, {
   selectLikedPosts,
 } from "../../shared/likedPostsSlice";
 
-export default function Post({ title, description, date, url }: Image) {
+export default function Post({ image }: { image: Image }) {
   const dispatch = useAppDispatch();
   const likedPosts = useAppSelector(selectLikedPosts);
   const [open, setOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    setIsLiked(likedPosts.indexOf(date) > -1 ? true : false);
+    setIsLiked(
+      likedPosts.some((likedPost) => likedPost.url === image.url) ? true : false
+    );
   }, [likedPosts]);
 
   const handleDescriptionToggle = useCallback(
@@ -35,7 +37,7 @@ export default function Post({ title, description, date, url }: Image) {
   );
 
   function handleLikeToggle() {
-    isLiked ? dispatch(removeLikedPost(date)) : dispatch(addLikedPost(date));
+    isLiked ? dispatch(removeLikedPost(image)) : dispatch(addLikedPost(image));
   }
 
   return (
@@ -48,10 +50,11 @@ export default function Post({ title, description, date, url }: Image) {
           objectFit: "cover",
           objectPosition: "center",
         }}
-        src={url}
+        src={image.url}
       />
       <div className="card-heading">
-        <Heading>{title}</Heading>
+        <Heading>{image.title}</Heading>
+        <p>{image.date}</p>
         <Button
           onClick={handleLikeToggle}
           pressed={isLiked}
@@ -67,7 +70,7 @@ export default function Post({ title, description, date, url }: Image) {
         expandOnPrint
       >
         <TextContainer>
-          <p>{description}</p>
+          <p>{image.description}</p>
         </TextContainer>
       </Collapsible>
       <Button

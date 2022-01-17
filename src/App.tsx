@@ -1,34 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { Page } from "@shopify/polaris";
+import { Page, Pagination, Tabs } from "@shopify/polaris";
 import logo from "./logo.svg";
 import "./App.css";
 import PostsContainer from "./components/PostsContainer/PostsContainer";
 import Skeleton from "./components/Skeleton/Skeleton";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import {
+  selectActivePage,
+  selectStatus,
+  setActivePage,
+} from "./components/PostsContainer/imagesSlice";
+
+const tabs = [
+  {
+    id: "explore",
+    content: "Explore",
+    accessibilityLabel: "Explore Page",
+    panelID: "explore-page-content",
+  },
+  {
+    id: "liked",
+    content: "Your Favourites",
+    panelID: "liked-page-content",
+  },
+];
 
 function App() {
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    // axios
-    //   .get(
-    //     `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_API_KEY}&date=2017-07-08`
-    //   )
-    //   .then((res) => {
-    //     console.log("calling API");
-    //     setImage({
-    //       title: res.data.title,
-    //       date: res.data.date,
-    //       description: res.data.explanation,
-    //       url: res.data.url,
-    //     });
-    //   })
-    //   .then(() => {
-    //     setLoading(false);
-    //   });
-  });
-  return (
-    <Page title="Spacestagram" divider>
-      <PostsContainer />
+  const status = useAppSelector(selectStatus);
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const handleTabChange = useCallback(
+    (selectedTabIndex) => setSelectedTab(selectedTabIndex),
+    []
+  );
+
+  return status === "loading" ? (
+    <Skeleton />
+  ) : status === "failed" ? (
+    <div>failed</div>
+  ) : (
+    <Page title="Spacestagram" divider narrowWidth>
+      <Tabs
+        tabs={tabs}
+        selected={selectedTab}
+        onSelect={handleTabChange}
+      ></Tabs>
+      <PostsContainer selectedTabId={tabs[selectedTab].id} />
     </Page>
   );
 }

@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../app/store";
+import { Image } from "./interfaces";
 
 /**
  * This slice of state stores the date of liked posts in an array.
  * As per the APOD API, the date is unique and is used as a key
  */
 export interface LikedPostsState {
-  data: string[];
+  data: Image[];
 }
 
 const initialState: LikedPostsState = {
@@ -18,11 +19,11 @@ export const likedPostsSlice = createSlice({
   initialState,
   reducers: {
     // add a single image to array of liked posts
-    addLikedPost: (state, action: PayloadAction<string>) => {
+    addLikedPost: (state, action: PayloadAction<Image>) => {
       state.data = addPostToLikedPosts(state, action.payload);
     },
     // remove a single image from array of liked posts
-    removeLikedPost: (state, action: PayloadAction<string>) => {
+    removeLikedPost: (state, action: PayloadAction<Image>) => {
       state.data = removePostFromLikedPosts(state, action.payload);
     },
   },
@@ -39,10 +40,13 @@ export const selectLikedPosts = (state: RootState) => state.likedPosts.data;
  * @param date the date of the image to be added
  * @returns the new state of likedPostsSlice
  */
-function addPostToLikedPosts(state: LikedPostsState, date: string) {
-  return state.data.indexOf(date) > -1
+function addPostToLikedPosts(
+  state: LikedPostsState,
+  imageToAdd: Image
+): Image[] {
+  return state.data.some((image) => image.url === imageToAdd.url)
     ? [...state.data]
-    : [...state.data, date];
+    : [...state.data, imageToAdd];
 }
 
 /**
@@ -51,12 +55,11 @@ function addPostToLikedPosts(state: LikedPostsState, date: string) {
  * @param date the date of the image to be added
  * @returns the new state of likedPostsSlice
  */
-function removePostFromLikedPosts(state: LikedPostsState, date: string) {
-  const indexOfImage = state.data.indexOf(date);
-  console.log(indexOfImage);
-  return indexOfImage > -1
-    ? state.data.filter((imageDate) => imageDate !== date)
-    : [...state.data];
+function removePostFromLikedPosts(
+  state: LikedPostsState,
+  imageToRemove: Image
+): Image[] {
+  return state.data.filter((image) => image.url !== imageToRemove.url);
 }
 
 export default likedPostsSlice.reducer;

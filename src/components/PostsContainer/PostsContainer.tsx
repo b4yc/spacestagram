@@ -1,30 +1,76 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Button, Layout } from "@shopify/polaris";
+import { Layout, Pagination } from "@shopify/polaris";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Post from "../Post/Post";
-import { Image } from "../../shared/interfaces";
-import { fetchImagesAsync, setImagesData, selectImages } from "./imagesSlice";
+import {
+  fetchImagesAsync,
+  selectPages,
+  selectActivePage,
+  addPageData,
+  setActivePage,
+} from "./imagesSlice";
 import "./PostsContainer.scss";
-import { useSelector } from "react-redux";
+import { selectLikedPosts } from "../../shared/likedPostsSlice";
 
-export default function PostsContainer() {
+type PostsContainerProps = {
+  selectedTabId: string;
+};
+
+export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
   const dispatch = useAppDispatch();
-  const images = useAppSelector(selectImages);
+  const pagesData = useAppSelector(selectPages);
+  const activePage = useAppSelector(selectActivePage);
+  const activeExplorePage = useAppSelector(selectActivePage);
+  const likedPosts = useAppSelector(selectLikedPosts);
 
   useEffect(() => {
-    dispatch(fetchImagesAsync());
-  }, []);
+    if (pagesData.some((page) => page.number === activePage)) {
+      console.log("exists already");
+      return;
+    } else {
+      dispatch(fetchImagesAsync(activePage))
+        .unwrap()
+        .then((res) => {
+          dispatch(
+            addPageData({
+              number: activePage,
+              images: res.data.map((image: any) => {
+                return {
+                  title: image.title,
+                  date: image.date,
+                  description: image.explanation,
+                  url:
+                    image.media_type === "video"
+                      ? image.thumbnail_url
+                      : image.url,
+                };
+              }),
+            })
+          );
+        });
+    }
+  }, [activePage]);
+
   return (
-    <div className="posts">
-      <Layout>
-        <Layout.Section>
-          {images.map((image) => (
-            <Post {...image} key={image.date} />
-          ))}
-        </Layout.Section>
-      </Layout>
-    </div>
+    <>
+      {selectedTabId === "explore"
+        ? pagesData[activePage]?.images?.map((image) => (
+            <Post image={image} key={image.date} />
+          ))
+        : likedPosts.map((image) => <Post image={image} key={image.date} />)}
+      {selectedTabId === "explore" && (
+        <Pagination
+          hasPrevious={activeExplorePage > 0}
+          onPrevious={() => {
+            dispatch(setActivePage(activeExplorePage - 1));
+          }}
+          hasNext
+          onNext={() => {
+            dispatch(setActivePage(activeExplorePage + 1));
+          }}
+        />
+      )}
+    </>
   );
 }
