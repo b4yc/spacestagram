@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState, AppThunk } from "../app/store";
+import { RootState } from "../app/store";
 import { Image } from "./interfaces";
 
 /**
@@ -11,8 +11,26 @@ export interface LikedPostsState {
 }
 
 const initialState: LikedPostsState = {
-  data: [],
+  data: JSON.parse(localStorage.getItem("likedPosts") || "[]") || [],
 };
+
+// const initializer = (initialValue = initialState) =>
+//   JSON.parse(localStorage.getItem("likedPosts")) || initialValue;
+
+export const authMiddleware =
+  ({ getState }: any) =>
+  (next: any) =>
+  (action: any) => {
+    const result = next(action);
+    if (addLikedPost.match(action) || removeLikedPost.match(action)) {
+      // Note: localStorage expects a string
+      localStorage.setItem(
+        "likedPosts",
+        JSON.stringify([...getState().likedPosts.data])
+      );
+    }
+    return result;
+  };
 
 export const likedPostsSlice = createSlice({
   name: "likedPosts",
@@ -61,5 +79,12 @@ function removePostFromLikedPosts(
 ): Image[] {
   return state.data.filter((image) => image.url !== imageToRemove.url);
 }
+
+// store.subscribe(() => {
+//   localStorage.setItem(
+//     "likedPosts",
+//     JSON.stringify(store.getState().likedPosts)
+//   );
+// });
 
 export default likedPostsSlice.reducer;

@@ -1,11 +1,13 @@
 import axios from "axios";
 
+/**
+ * constant for the number of images per page that the app allows
+ */
 export const NUM_OF_IMAGES_PER_PAGE = 15;
 
 /**
- *
- * @param page
- * @param today
+ * helper function converting the page number to the start date of api call
+ * @param page the page number
  */
 function convertPageToStartDate(page: number): string {
   let startDate = new Date();
@@ -18,6 +20,10 @@ function convertPageToStartDate(page: number): string {
   return startDate.toISOString().split("T")[0];
 }
 
+/**
+ * helper function converting the page number to the end date of api call
+ * @param page the page number
+ */
 function convertPageToEndDate(page: number): string {
   let endDate = new Date();
 

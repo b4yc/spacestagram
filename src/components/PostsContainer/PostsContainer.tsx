@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Layout, Pagination } from "@shopify/polaris";
+import React, { useEffect } from "react";
+import { EmptyState, Pagination } from "@shopify/polaris";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Post from "../Post/Post";
@@ -9,8 +9,8 @@ import {
   selectActivePage,
   addPageData,
   setActivePage,
+  selectStatus,
 } from "./imagesSlice";
-import "./PostsContainer.scss";
 import { selectLikedPosts } from "../../shared/likedPostsSlice";
 
 type PostsContainerProps = {
@@ -23,12 +23,13 @@ export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
   const activePage = useAppSelector(selectActivePage);
   const activeExplorePage = useAppSelector(selectActivePage);
   const likedPosts = useAppSelector(selectLikedPosts);
+  const status = useAppSelector(selectStatus);
 
   useEffect(() => {
-    if (pagesData.some((page) => page.number === activePage)) {
-      console.log("exists already");
-      return;
-    } else {
+    if (
+      !pagesData.some((page) => page.number === activePage) &&
+      status !== "failed"
+    ) {
       dispatch(fetchImagesAsync(activePage))
         .unwrap()
         .then((res) => {
@@ -54,22 +55,68 @@ export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
 
   return (
     <>
-      {selectedTabId === "explore"
-        ? pagesData[activePage]?.images?.map((image) => (
-            <Post image={image} key={image.date} />
-          ))
-        : likedPosts.map((image) => <Post image={image} key={image.date} />)}
-      {selectedTabId === "explore" && (
-        <Pagination
-          hasPrevious={activeExplorePage > 0}
-          onPrevious={() => {
-            dispatch(setActivePage(activeExplorePage - 1));
+      {selectedTabId === "explore" ? (
+        status === "failed" ? (
+          <EmptyState
+            heading="Something got lost in space..."
+            image="./failed.png"
+          >
+            <p>Please try again later.</p>
+          </EmptyState>
+        ) : (
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column-reverse",
+              }}
+            >
+              {pagesData
+                .find((page) => page.number === activePage)
+                ?.images?.map((image) => (
+                  <Post image={image} key={image.url} />
+                ))}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "2rem",
+              }}
+            >
+              <Pagination
+                hasPrevious={activeExplorePage > 0}
+                onPrevious={() => {
+                  dispatch(setActivePage(activeExplorePage - 1));
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                hasNext
+                onNext={() => {
+                  dispatch(setActivePage(activeExplorePage + 1));
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              />
+            </div>
+          </>
+        )
+      ) : likedPosts.length === 0 ? (
+        <EmptyState heading="There's nothing to see here" image="./empty.png">
+          <p>
+            Head over to the <em>Explore Recent</em> tab to start your
+            collection!
+          </p>
+        </EmptyState>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column-reverse",
           }}
-          hasNext
-          onNext={() => {
-            dispatch(setActivePage(activeExplorePage + 1));
-          }}
-        />
+        >
+          {likedPosts.map((image) => (
+            <Post image={image} key={image.url} />
+          ))}
+        </div>
       )}
     </>
   );

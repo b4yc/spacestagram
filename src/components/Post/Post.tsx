@@ -1,19 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  Layout,
-  MediaCard,
   Card,
   Button,
   Heading,
   Collapsible,
   TextContainer,
+  Toast,
+  Frame,
+  ButtonGroup,
 } from "@shopify/polaris";
-import { HeartMajor } from "@shopify/polaris-icons";
 import { Image } from "../../shared/interfaces";
-import { ChevronDownMinor, ChevronUpMinor } from "@shopify/polaris-icons";
+import {
+  ChevronDownMinor,
+  ChevronUpMinor,
+  ShareMinor,
+  HeartMajor,
+} from "@shopify/polaris-icons";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import "./Post.scss";
-import likedPostsSlice, {
+import {
   addLikedPost,
   removeLikedPost,
   selectLikedPosts,
@@ -22,8 +27,16 @@ import likedPostsSlice, {
 export default function Post({ image }: { image: Image }) {
   const dispatch = useAppDispatch();
   const likedPosts = useAppSelector(selectLikedPosts);
-  const [open, setOpen] = useState(false);
+  const [descriptionOpen, setDescriptionOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [toastActive, setToastActive] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [formattedDate, setFormattedDate] = useState("");
+
+  useEffect(() => {
+    const date = new Date(image.date);
+    setFormattedDate(date.toDateString().split(" ").slice(1).join(" "));
+  });
 
   useEffect(() => {
     setIsLiked(
@@ -31,56 +44,90 @@ export default function Post({ image }: { image: Image }) {
     );
   }, [likedPosts]);
 
+  const toggleToastActive = useCallback(
+    () => setToastActive((toastActive) => !toastActive),
+    []
+  );
+
   const handleDescriptionToggle = useCallback(
-    () => setOpen((open) => !open),
+    () => setDescriptionOpen((open) => !open),
     []
   );
 
   function handleLikeToggle() {
-    isLiked ? dispatch(removeLikedPost(image)) : dispatch(addLikedPost(image));
+    if (isLiked) {
+      setToastMessage("Removed from Favourites");
+      dispatch(removeLikedPost(image));
+    } else {
+      setToastMessage("Added to Favourites");
+      dispatch(addLikedPost(image));
+    }
+    setToastActive(true);
   }
 
   return (
-    <Card sectioned>
-      <img
-        alt=""
-        width="100%"
-        height="100%"
-        style={{
-          objectFit: "cover",
-          objectPosition: "center",
-        }}
-        src={image.url}
-      />
-      <div className="card-heading">
-        <Heading>{image.title}</Heading>
-        <p>{image.date}</p>
-        <Button
-          onClick={handleLikeToggle}
-          pressed={isLiked}
-          icon={HeartMajor}
-          plain
-        ></Button>
-      </div>
+    <>
+      <Card sectioned>
+        <img
+          alt={"APOD image of " + image.date}
+          width="100%"
+          height="100%"
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+          src={image.url}
+        />
+        <div className="card-heading">
+          <div>
+            <Heading>{image.title}</Heading>
+            <p>{formattedDate}</p>
+          </div>
+          <ButtonGroup segmented>
+            <Button
+              onClick={() => {
+                setToastMessage("URL Copied to Clipboard");
+                setToastActive(true);
+                navigator.clipboard.writeText(image.url);
+              }}
+              accessibilityLabel="Copy url to clipboard"
+              icon={ShareMinor}
+            ></Button>
+            <Button
+              onClick={handleLikeToggle}
+              accessibilityLabel={isLiked ? "Unlike post" : "Like post"}
+              pressed={isLiked}
+              icon={HeartMajor}
+            ></Button>
+          </ButtonGroup>
+        </div>
 
-      <Collapsible
-        open={open}
-        id="collapsible-description"
-        transition={{ duration: "500ms", timingFunction: "ease-in-out" }}
-        expandOnPrint
-      >
-        <TextContainer>
-          <p>{image.description}</p>
-        </TextContainer>
-      </Collapsible>
-      <Button
-        onClick={handleDescriptionToggle}
-        ariaExpanded={open}
-        ariaControls="collapsible-description"
-        icon={open ? ChevronUpMinor : ChevronDownMinor}
-        plain
-        fullWidth
-      />
-    </Card>
+        <Collapsible
+          open={descriptionOpen}
+          id="collapsible-description"
+          transition={{ duration: "500ms", timingFunction: "ease-in-out" }}
+          expandOnPrint
+        >
+          <TextContainer>
+            <p>{image.description}</p>
+          </TextContainer>
+        </Collapsible>
+        <Button
+          onClick={handleDescriptionToggle}
+          accessibilityLabel={
+            descriptionOpen ? "Collapse description" : "Expand description"
+          }
+          ariaExpanded={descriptionOpen}
+          ariaControls="collapsible-description"
+          icon={descriptionOpen ? ChevronUpMinor : ChevronDownMinor}
+          plain
+          fullWidth
+        />
+      </Card>
+
+      {toastActive ? (
+        <Toast content={toastMessage} onDismiss={toggleToastActive} />
+      ) : null}
+    </>
   );
 }

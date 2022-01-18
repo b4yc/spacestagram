@@ -1,21 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import { Page, Pagination, Tabs } from "@shopify/polaris";
-import logo from "./logo.svg";
+import React, { useCallback, useState } from "react";
+
+import { Frame, Page, Tabs, Thumbnail } from "@shopify/polaris";
+
 import "./App.css";
 import PostsContainer from "./components/PostsContainer/PostsContainer";
 import Skeleton from "./components/Skeleton/Skeleton";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
-import {
-  selectActivePage,
-  selectStatus,
-  setActivePage,
-} from "./components/PostsContainer/imagesSlice";
+import { useAppSelector } from "./app/hooks";
+import { selectStatus } from "./components/PostsContainer/imagesSlice";
 
-const tabs = [
+export const tabs = [
   {
     id: "explore",
-    content: "Explore",
+    content: "Explore Recent",
     accessibilityLabel: "Explore Page",
     panelID: "explore-page-content",
   },
@@ -37,16 +33,30 @@ function App() {
 
   return status === "loading" ? (
     <Skeleton />
-  ) : status === "failed" ? (
-    <div>failed</div>
   ) : (
-    <Page title="Spacestagram" divider narrowWidth>
-      <Tabs
-        tabs={tabs}
-        selected={selectedTab}
-        onSelect={handleTabChange}
-      ></Tabs>
-      <PostsContainer selectedTabId={tabs[selectedTab].id} />
+    <Page title="" narrowWidth>
+      <img
+        src="./logo.svg"
+        alt="spacestagram-logo"
+        style={{
+          width: "200px",
+          padding: "1rem  0",
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          window.location.reload();
+        }}
+      ></img>
+      <hr />
+      <Frame>
+        <Tabs
+          tabs={tabs}
+          selected={selectedTab}
+          onSelect={handleTabChange}
+          fitted
+        ></Tabs>
+        <PostsContainer selectedTabId={tabs[selectedTab].id} />
+      </Frame>
     </Page>
   );
 }

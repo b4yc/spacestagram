@@ -1,19 +1,20 @@
 import {
-  Layout,
   Card,
-  Button,
   SkeletonBodyText,
   SkeletonDisplayText,
   TextContainer,
   SkeletonPage,
   SkeletonThumbnail,
+  Tabs,
 } from "@shopify/polaris";
-import React from "react";
 import { NUM_OF_IMAGES_PER_PAGE } from "../PostsContainer/imagesApi";
+import { tabs } from "../../App";
 
 export default function Skeleton() {
   return (
-    <SkeletonPage title="Spacestagram" narrowWidth>
+    <SkeletonPage title="" narrowWidth>
+      <hr />
+      <Tabs tabs={tabs} selected={0} fitted></Tabs>
       {Array(NUM_OF_IMAGES_PER_PAGE)
         .fill(0)
         .map((index) => {

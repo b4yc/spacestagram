@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState, AppThunk } from "../../app/store";
+import { RootState } from "../../app/store";
 import { Image } from "../../shared/interfaces";
 import { fetchImages } from "./imagesApi";
 
@@ -42,7 +42,7 @@ export const imagesSlice = createSlice({
   initialState,
   reducers: {
     addPageData: (state, action: PayloadAction<Page>) => {
-      state.data.pagesData = [...state.data.pagesData, action.payload];
+      state.data.pagesData = addPageIfUnique(state, action.payload);
     },
     setActivePage: (state, action: PayloadAction<number>) => {
       state.data.activePage = action.payload;
@@ -74,15 +74,9 @@ export const selectActivePage = (state: RootState) =>
   state.images.data.activePage;
 export const selectStatus = (state: RootState) => state.images.status;
 
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-// export const incrementIfOdd =
-//   (amount: number): AppThunk =>
-//   (dispatch, getState) => {
-//     const currentValue = selectCount(getState());
-//     if (currentValue % 2 === 1) {
-//       dispatch(incrementByAmount(amount));
-//     }
-//   };
-
+function addPageIfUnique(state: ImagesState, pageToAdd: Page): Page[] {
+  return state.data.pagesData.some((page) => page.number === pageToAdd.number)
+    ? [...state.data.pagesData]
+    : [...state.data.pagesData, pageToAdd];
+}
 export default imagesSlice.reducer;
