@@ -9,7 +9,7 @@ export const store = configureStore({
     likedPosts: likedPostsReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authMiddleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat(authMiddleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

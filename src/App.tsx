@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 
-import { Frame, Page, Tabs, Thumbnail } from "@shopify/polaris";
+import { Frame, Page, Tabs } from "@shopify/polaris";
 
 import "./App.css";
 import PostsContainer from "./components/PostsContainer/PostsContainer";
@@ -37,7 +37,7 @@ function App() {
     <Page title="" narrowWidth>
       <img
         src="./logo.svg"
-        alt="spacestagram-logo"
+        alt="spacestagram logo"
         style={{
           width: "200px",
           padding: "1rem  0",
@@ -46,6 +46,7 @@ function App() {
         onClick={() => {
           window.location.reload();
         }}
+        data-testid="logo"
       ></img>
       <hr />
       <Frame>
