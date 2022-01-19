@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Card,
   SkeletonBodyText,
@@ -17,7 +18,7 @@ export default function Skeleton() {
       <Tabs tabs={tabs} selected={0} fitted></Tabs>
       {Array(NUM_OF_IMAGES_PER_PAGE)
         .fill(0)
-        .map((index) => {
+        .map((_, index) => {
           return (
             <Card key={index}>
               <Card.Section>

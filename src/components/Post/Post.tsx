@@ -6,7 +6,6 @@ import {
   Collapsible,
   TextContainer,
   Toast,
-  Frame,
   ButtonGroup,
 } from "@shopify/polaris";
 import { Image } from "../../shared/interfaces";
@@ -17,7 +16,6 @@ import {
   HeartMajor,
 } from "@shopify/polaris-icons";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import "./Post.scss";
 import {
   addLikedPost,
   removeLikedPost,
@@ -36,7 +34,7 @@ export default function Post({ image }: { image: Image }) {
   useEffect(() => {
     const date = new Date(image.date);
     setFormattedDate(date.toDateString().split(" ").slice(1).join(" "));
-  });
+  }, [image.date]);
 
   useEffect(() => {
     setIsLiked(
@@ -78,7 +76,14 @@ export default function Post({ image }: { image: Image }) {
           }}
           src={image.url}
         />
-        <div className="card-heading">
+        <div
+          style={{
+            padding: "1rem 0",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <div>
             <Heading>{image.title}</Heading>
             <p>{formattedDate}</p>

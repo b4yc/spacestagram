@@ -16,7 +16,7 @@ export interface ImagesState {
   status: "idle" | "loading" | "failed";
 }
 
-const initialState: ImagesState = {
+export const initialState: ImagesState = {
   data: {
     activePage: 0,
     pagesData: [],
@@ -75,6 +75,7 @@ export const selectActivePage = (state: RootState) =>
 export const selectStatus = (state: RootState) => state.images.status;
 
 function addPageIfUnique(state: ImagesState, pageToAdd: Page): Page[] {
+  if (!state.data.pagesData) return [pageToAdd];
   return state.data.pagesData.some((page) => page.number === pageToAdd.number)
     ? [...state.data.pagesData]
     : [...state.data.pagesData, pageToAdd];

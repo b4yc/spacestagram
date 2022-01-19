@@ -49,20 +49,25 @@ export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
               }),
             })
           );
+        })
+        .catch((res) => {
+          console.log("Error occurred", res);
         });
     }
-  }, [activePage]);
+  });
 
   return (
     <>
       {selectedTabId === "explore" ? (
         status === "failed" ? (
-          <EmptyState
-            heading="Something got lost in space..."
-            image="./failed.png"
-          >
-            <p>Please try again later.</p>
-          </EmptyState>
+          <div data-testid="error-state-page">
+            <EmptyState
+              heading="Something got lost in space..."
+              image="./failed.png"
+            >
+              <p>Please try again later.</p>
+            </EmptyState>
+          </div>
         ) : (
           <>
             <div
