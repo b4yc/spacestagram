@@ -33,7 +33,11 @@ export default function Post({ image }: { image: Image }) {
 
   useEffect(() => {
     const date = new Date(image.date);
-    setFormattedDate(date.toDateString().split(" ").slice(1).join(" "));
+    setFormattedDate(
+      `${date.toLocaleString("default", { month: "short" })} 
+      ${date.getUTCDate()},
+      ${date.getUTCFullYear()}`
+    );
   }, [image.date]);
 
   useEffect(() => {

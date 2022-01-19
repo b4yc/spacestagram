@@ -7,6 +7,7 @@ import PostsContainer from "./components/PostsContainer/PostsContainer";
 import Skeleton from "./components/Skeleton/Skeleton";
 import { useAppSelector } from "./app/hooks";
 import { selectStatus } from "./components/PostsContainer/imagesSlice";
+import logo from "./assets/logo.svg";
 
 export const tabs = [
   {
@@ -36,7 +37,7 @@ function App() {
   ) : (
     <Page title="" narrowWidth>
       <img
-        src="./logo.svg"
+        src={logo}
         alt="spacestagram logo"
         style={{
           width: "200px",

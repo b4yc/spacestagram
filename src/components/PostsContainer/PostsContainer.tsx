@@ -12,6 +12,8 @@ import {
   selectStatus,
 } from "./imagesSlice";
 import { selectLikedPosts } from "../../shared/likedPostsSlice";
+import emptyImage from "../../assets/empty.png";
+import failedImage from "../../assets/failed.png";
 
 type PostsContainerProps = {
   selectedTabId: string;
@@ -63,7 +65,7 @@ export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
           <div data-testid="error-state-page">
             <EmptyState
               heading="Something got lost in space..."
-              image="./failed.png"
+              image={failedImage}
             >
               <p>Please try again later.</p>
             </EmptyState>
@@ -105,7 +107,7 @@ export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
           </>
         )
       ) : likedPosts.length === 0 ? (
-        <EmptyState heading="There's nothing to see here" image="./empty.png">
+        <EmptyState heading="There's nothing to see here" image={emptyImage}>
           <p>
             Head over to the <em>Explore Recent</em> tab to start your
             collection!
