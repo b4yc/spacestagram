@@ -4,7 +4,7 @@ import { Image } from "./interfaces";
 
 /**
  * This slice of state stores the date of liked posts in an array.
- * As per the APOD API, the date is unique and is used as a key
+ * Assume url is unique and is used as a key
  */
 export interface LikedPostsState {
   data: Image[];
@@ -14,16 +14,12 @@ const initialState: LikedPostsState = {
   data: JSON.parse(localStorage.getItem("likedPosts") || "[]") || [],
 };
 
-// const initializer = (initialValue = initialState) =>
-//   JSON.parse(localStorage.getItem("likedPosts")) || initialValue;
-
 export const authMiddleware =
   ({ getState }: any) =>
   (next: any) =>
   (action: any) => {
     const result = next(action);
     if (addLikedPost.match(action) || removeLikedPost.match(action)) {
-      // Note: localStorage expects a string
       localStorage.setItem(
         "likedPosts",
         JSON.stringify([...getState().likedPosts.data])
@@ -62,7 +58,7 @@ function addPostToLikedPosts(
   state: LikedPostsState,
   imageToAdd: Image
 ): Image[] {
-  return state.data.some((image) => image.url === imageToAdd.url)
+  return state.data?.some((image) => image.url === imageToAdd.url)
     ? [...state.data]
     : [...state.data, imageToAdd];
 }
@@ -79,12 +75,5 @@ function removePostFromLikedPosts(
 ): Image[] {
   return state.data.filter((image) => image.url !== imageToRemove.url);
 }
-
-// store.subscribe(() => {
-//   localStorage.setItem(
-//     "likedPosts",
-//     JSON.stringify(store.getState().likedPosts)
-//   );
-// });
 
 export default likedPostsSlice.reducer;

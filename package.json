@@ -7,6 +7,7 @@
     "@reduxjs/toolkit": "^1.7.1",
     "@shopify/browserslist-config": "^3.0.0",
     "@shopify/polaris": "^7.5.0",
+    "@shopify/react-testing": "^3.3.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^7.2.1",
@@ -22,6 +23,7 @@
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
     "react-scripts": "^3.0.1",
+    "redux-mock-store": "^1.5.4",
     "typescript": "4.5.4",
     "typescript-eslint": "^0.0.1-alpha.0"
   },
@@ -52,10 +54,7 @@
     ]
   },
   "devDependencies": {
-    "@types/enzyme": "^3.10.11",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
+    "@types/redux-mock-store": "^1.0.3",
     "gh-pages": "^3.2.3"
   }
 }

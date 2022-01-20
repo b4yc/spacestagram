@@ -101,12 +101,14 @@ export default function Post({ image }: { image: Image }) {
               }}
               accessibilityLabel="Copy url to clipboard"
               icon={ShareMinor}
+              data-testid="share-button"
             ></Button>
             <Button
               onClick={handleLikeToggle}
               accessibilityLabel={isLiked ? "Unlike post" : "Like post"}
               pressed={isLiked}
               icon={HeartMajor}
+              data-testid="like-button"
             ></Button>
           </ButtonGroup>
         </div>

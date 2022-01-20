@@ -41,7 +41,7 @@ function App() {
         alt="spacestagram logo"
         style={{
           width: "200px",
-          padding: "1rem  0",
+          padding: "1rem",
           cursor: "pointer",
         }}
         onClick={() => {
