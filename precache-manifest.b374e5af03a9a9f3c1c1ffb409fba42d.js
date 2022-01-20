@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c86251cdb7fa5a902f54cb98964bf324",
+    "revision": "a277d0100d808c9d1b9a7e0f2208f50b",
     "url": "/spacestagram/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/spacestagram/static/css/2.eb9c9433.chunk.css"
   },
   {
-    "revision": "cf7fd2670ff5d48d654d",
+    "revision": "19bd1f3607ede8376a8b",
     "url": "/spacestagram/static/css/main.e3d9918a.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/spacestagram/static/js/2.2367c064.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "cf7fd2670ff5d48d654d",
-    "url": "/spacestagram/static/js/main.dd538659.chunk.js"
+    "revision": "19bd1f3607ede8376a8b",
+    "url": "/spacestagram/static/js/main.48803b16.chunk.js"
   },
   {
     "revision": "ab4a4523e73f7e48e722",
