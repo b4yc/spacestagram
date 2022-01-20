@@ -8,18 +8,22 @@ This web application allows you to browse pictures from NASA's infamous Astronom
 
 ## Features
 
-- Browse NASA's Picture of the Day by most recently posted
+- Browse NASA's Picture of the Day endlessly (through pagination) by most recently posted
 - "Like" images to add to your favourites
 - View all your favourited images in the "Your favourites" tab
-- Need to take a coffee break from scrolling in space? Go ahead; favourites are saved on the application even if you leave the site!
+- Need to take a coffee break from scrolling through space? Go ahead; favourites are saved on the application even if you leave the site!
+- Share button instantly copies the image url to your clipboard
+- API called are memoized for fast loading when re-referencing
 
 ## Technical Details
 
 This app is built with:
 
-- [React](https://reactjs.org)
-- [Shopify Polaris](https://polaris.shopify.com)
-- [NASA APOD](https://github.com/nasa/apod-api)
+- [Typescript](https://www.typescriptlang.org/), for strong typing and error checking
+- [React](https://reactjs.org), for rapid prototyping and creating reusable components
+- [Shopify Polaris](https://polaris.shopify.com), for beautiful and easy styling
+- [NASA APOD](https://github.com/nasa/apod-api), for retrieving images that are out of this world
+- [npm](https://www.npmjs.com/), for managing the packages
 
 This app is bootstrapped using [create-react-app](https://github.com/facebook/create-react-app), with additional styling provided by the Shopify Polaris library.
 
@@ -41,15 +45,30 @@ To run end to end tests:
 npm run test:e2e
 ```
 
+## Accessibility and Mobile Users
+
+This app was built with accesiblity kept in mind, and here are a few things I did to make sure outer space can be loved by all:
+- Semantic HTML
+- Including aria-labels when necessary
+- Followed Polaris' guidelines for accessibiliy when using any components
+- Tested through Lighthouse
+- Tested through screen reader and keyboard navigation
+- Tested in mobile
+
 ## Getting Started
 
-To edit and deploy this project locally, run the following commands:
+To edit and deploy this project locally, follow these steps:
 
+1. retrieve a free API key from NASA [here](https://api.nasa.gov/)
+2. clone this repository
 ```bash
 git clone https://github.com/b4yc/spacestagram/
-cd spacestagram
+```
+3. create a file in the root named `.env`
+4. paste this into the file: `REACT_APP_NASA_API_KEY={apikey}` replacing {apikey} with your API key retrieved from NASA
+5. navigate to the repository, install packages and get started!
+```bash
 npm i
 npm start
 ```
-
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+6. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
