@@ -13,12 +13,13 @@ export const tabs = [
   {
     id: "explore",
     content: "Explore Recent",
-    accessibilityLabel: "Explore Page",
+    accessibilityLabel: "Explore Recent Page",
     panelID: "explore-page-content",
   },
   {
     id: "liked",
     content: "Your Favourites",
+    accessibilityLabel: "Your Favourites Page",
     panelID: "liked-page-content",
   },
 ];

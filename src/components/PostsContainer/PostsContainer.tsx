@@ -77,6 +77,7 @@ export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
                 display: "flex",
                 flexDirection: "column-reverse",
               }}
+              data-testid="apod-images"
             >
               {pagesData
                 .find((page) => page.number === activePage)
@@ -107,18 +108,21 @@ export default function PostsContainer({ selectedTabId }: PostsContainerProps) {
           </>
         )
       ) : likedPosts.length === 0 ? (
-        <EmptyState heading="There's nothing to see here" image={emptyImage}>
-          <p>
-            Head over to the <em>Explore Recent</em> tab to start your
-            collection!
-          </p>
-        </EmptyState>
+        <div data-testid="empty-state-page">
+          <EmptyState heading="There's nothing to see here" image={emptyImage}>
+            <p>
+              Head over to the <em>Explore Recent</em> tab to start your
+              collection!
+            </p>
+          </EmptyState>
+        </div>
       ) : (
         <div
           style={{
             display: "flex",
             flexDirection: "column-reverse",
           }}
+          data-testid="liked-images"
         >
           {likedPosts.map((image) => (
             <Post image={image} key={image.url} />
