@@ -20,8 +20,8 @@ export default function Skeleton() {
         .fill(0)
         .map((_, index) => {
           return (
-            <div style={{ margin: "16px" }}>
-              <Card key={index}>
+            <div key={index} style={{ margin: "16px" }}>
+              <Card>
                 <Card.Section>
                   <SkeletonThumbnail size="large" />
                   <TextContainer>

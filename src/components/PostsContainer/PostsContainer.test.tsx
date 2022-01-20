@@ -1,10 +1,9 @@
 import React from "react";
-import { cleanup, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../app/store";
 import { AppProvider } from "@shopify/polaris";
 import enTranslations from "@shopify/polaris/locales/en.json";
-afterEach(cleanup);
 import "@testing-library/jest-dom";
 import PostsContainer from "./PostsContainer";
 
