@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/spacestagram/precache-manifest.868800ee1cb25c40a6cb254a88ffe1d5.js"
+  "/spacestagram/precache-manifest.e653f9a028490f55b6b90a76a181bbb6.js"
 );
 
 self.addEventListener('message', (event) => {
