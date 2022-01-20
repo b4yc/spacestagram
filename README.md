@@ -13,7 +13,7 @@ This web application allows you to browse pictures from NASA's infamous Astronom
 - View all your favourited images in the "Your favourites" tab
 - Need to take a coffee break from scrolling through space? Go ahead; favourites are saved on the application even if you leave the site!
 - Share button instantly copies the image url to your clipboard
-- API called are memoized for fast loading when re-referencing
+- API calls are memoized for fast loading when re-referencing images
 
 ## Technical Details
 
@@ -21,9 +21,10 @@ This app is built with:
 
 - [Typescript](https://www.typescriptlang.org/), for strong typing and error checking
 - [React](https://reactjs.org), for rapid prototyping and creating reusable components
-- [Shopify Polaris](https://polaris.shopify.com), for beautiful and easy styling
+- [Redux](https://redux.js.org/), because we love single sources of truth
+- [Shopify Polaris](https://polaris.shopify.com), for beautiful and easy styling (and relevant)
 - [NASA APOD](https://github.com/nasa/apod-api), for retrieving images that are out of this world
-- [npm](https://www.npmjs.com/), for managing the packages
+- [npm](https://www.npmjs.com/), for managing the many packages
 
 This app is bootstrapped using [create-react-app](https://github.com/facebook/create-react-app), with additional styling provided by the Shopify Polaris library.
 
@@ -44,6 +45,7 @@ To run end to end tests:
 ```bash
 npm run test:e2e
 ```
+*Note: end to end tests must be ran with the development server started. See [Getting Started](#getting-started)*
 
 ## Accessibility and Mobile Users
 
