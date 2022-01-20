@@ -68,7 +68,7 @@ export default function Post({ image }: { image: Image }) {
   }
 
   return (
-    <>
+    <div style={{ margin: "16px" }}>
       <Card sectioned>
         <img
           alt={"APOD image of " + image.date}
@@ -139,6 +139,6 @@ export default function Post({ image }: { image: Image }) {
       {toastActive ? (
         <Toast content={toastMessage} onDismiss={toggleToastActive} />
       ) : null}
-    </>
+    </div>
   );
 }

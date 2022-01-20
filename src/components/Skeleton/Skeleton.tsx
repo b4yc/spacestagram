@@ -20,16 +20,18 @@ export default function Skeleton() {
         .fill(0)
         .map((_, index) => {
           return (
-            <Card key={index}>
-              <Card.Section>
-                <SkeletonThumbnail size="large" />
-                <TextContainer>
-                  <br />
-                  <SkeletonDisplayText size="small" />
-                  <SkeletonBodyText lines={2} />
-                </TextContainer>
-              </Card.Section>
-            </Card>
+            <div style={{ margin: "16px" }}>
+              <Card key={index}>
+                <Card.Section>
+                  <SkeletonThumbnail size="large" />
+                  <TextContainer>
+                    <br />
+                    <SkeletonDisplayText size="small" />
+                    <SkeletonBodyText lines={2} />
+                  </TextContainer>
+                </Card.Section>
+              </Card>
+            </div>
           );
         })}
     </SkeletonPage>
